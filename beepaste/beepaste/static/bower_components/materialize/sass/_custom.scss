@@ -1,0 +1,30 @@
+body {
+    background-color: $bg-color;
+}
+
+.title-container {
+    margin-left: -$card-padding;
+    padding-left: $card-padding;
+    border-left: $primary-color 5px solid;
+}
+
+.title-spacer {
+    border-bottom: $spacer-color 2px solid;
+    margin-bottom: 8px;
+}
+
+.encryption-label {
+    @media only screen and (min-width: 0) {
+      font-size: 14px;
+    }
+
+    @media only screen and (min-width: $medium-screen) {
+      font-size: 14.5px;
+    }
+
+    @media only screen and (min-width: $large-screen) {
+      font-size: 15px;
+    }
+
+    color: $off-black;
+}

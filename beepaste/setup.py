@@ -17,6 +17,13 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
+    'mysqlclient',
+    'webhelpers2==2.0',
+    'passlib',
+    'pyramid_mailer',
+    'wtforms',
+    'qrcode',
+    'Image',
 ]
 
 tests_require = [
