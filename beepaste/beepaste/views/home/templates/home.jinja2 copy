@@ -9,39 +9,32 @@
             <div class="card-content" style="min-height: 100%;">
               <div class="title-container"><span class="card-title">Create a New Paste</span></div>
                 <form action="{{ form.action }}" method="post" id="pasteForm">
+                    <input type="hidden" name="_charset_">
+                    <input type="hidden" name="__start__" value="createpaste:mapping">
                   <div class="form-container">
                     <div class="row">
                         <div class="input-field col s12 m3">
-                            {% for error in form.pasteAuthor.errors %}
-                                <div class="error">{{ error }}</div>
-                            {% endfor %}
                             <i class="fa fa-user prefix"></i>
-                            <input id="pasteAuthor" type="text" class="" name="pasteAuthor">
-                            {{ form.pasteAuthor.label | safe }}
+                            <input id="pasteAuthor" type="text" class="validate" name="pasteAuthor">
+                            <label for="pasteAuthor">{{ form['createpaste']['pasteAuthor'].title | safe }}</label>
                         </div>
                         <div class="input-field col s12 m3">
-                            {% for error in form.pasteTitle.errors %}
-                                <div class="error">{{ error }}</div>
-                            {% endfor %}
                             <i class="fa fa-flag prefix"></i>
-                            <input id="pasteTitle" type="text" class="" name="pasteTitle">
-                            {{ form.pasteTitle.label | safe }}
+                            <input id="pasteTitle" type="text" class="validate" name="pasteTitle">
+                            <label for="pasteTitle">{{ form['createpaste']['pasteTitle'].title | safe }}</label>
                         </div>
                         <div class="input-field col s12 m3">
                             <i class="fa fa-code prefix"></i>
-                            {{ form.pasteLanguage() | safe }}
+                            {{ form['createpaste']['pasteLanguage'].serialize() | safe }}
                         </div>
                         <div class="input-field col s12 m3">
                             <i class="fa fa-calendar prefix"></i>
-                            {{ form.pasteExpire() | safe }}
+                            {{ form['createpaste']['pasteExpire'].serialize() | safe }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col s12">
-                            {% for error in form.pasteRaw.errors %}
-                                <div class="error">{{ error }}</div>
-                            {% endfor %}
-                            <input type="hidden" id="pasteRaw" name="pasteRaw">
+                            {{ form['createpaste']['pasteRaw'].serialize() | safe }}
                             <pre id="Editor"></pre>
                         </div>
                     </div>
@@ -99,6 +92,7 @@
                         </div>
                     </div>
                   </div>
+                  <input type="hidden" name="__end__" value="createpaste:mapping">
               </form>
             </div>
           </div>

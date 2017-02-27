@@ -111,7 +111,7 @@ var ACE = {
 	    editor.setOption("minLines", 20);
 	    editor.setOptions({fontSize :"13pt"});
 
-		$('#deformField4').change(function() {
+		$('#pasteLanguage').change(function() {
 				set_language();
 		});
 
@@ -128,7 +128,7 @@ var ACE = {
 		}
 
 		set_language = function() {
-			var lang = $('#deformField4').val();
+			var lang = $('#pasteLanguage').val();
 			mode = lang;
 			//if (check(mode)) set_syntax(mode);
             console.log("setting syntax " + mode);
@@ -138,8 +138,8 @@ var ACE = {
 		set_language();
 
         var input = $('input[name=pasteRaw]');
-        //$('#pasteForm').submit(function() {
-        $('#submitBtn').click(function() {
+        $('#pasteForm').submit(function() {
+        //$('#submitBtn').click(function() {
             console.log(editor.getValue());
             var encryption = $('input[name=encryption]:checked').val();
             if (encryption == "no") {
