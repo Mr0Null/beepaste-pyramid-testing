@@ -12,17 +12,11 @@ from wtforms import Form, TextField, SelectField, validators, RadioField
 @view_config(route_name='home', renderer='templates/home.jinja2')
 def home(request):
     class createPaste(Form):
-        #pasteTitle = colander.SchemaNode(colander.String(), title="Title")
         pasteTitle = TextField('Title', [validators.Length(min=0, max=255)])
-        #pasteAuthor = colander.SchemaNode(colander.String(), title="Author")
         pasteAuthor = TextField('Author', [validators.Length(min=0, max=255)])
-        #pasteLanguage = colander.SchemaNode(colander.String(), default="text", widget=deform.widget.SelectWidget(values=languagesList), Title="Languages")
-        pasteLanguage = SelectField('Syntax Highlighting', choices=languagesList)
-        #pasteExpire = colander.SchemaNode(colander.String(), default=-1, widget=deform.widget.SelectWidget(values=expireTimes), Title="Expire On")
+        pasteLanguage = SelectField('Syntax Highlighting', choices=languagesList, default='text')
         pasteExpire = SelectField('Expire On', choices=expireTimes)
-        #pasteRaw = colander.SchemaNode(colander.Integer(), widget=deform.widget.HiddenWidget())
         pasteRaw = TextField('Raw Text', [validators.Required()])
-        #encryption = colander.SchemaNode(colander.String(), validator=colander.OneOf([x[0] for x in encryptionMethods]), widget=deform.widget.RadioChoiceWidget(values=encryptionMethods), title='Encryption')
         pasteEncryption = RadioField('Paste Encryption', choices=encryptionMethods)
 
     def generateURI():
@@ -45,5 +39,5 @@ def home(request):
             print('form validated!')
         else:
             print("not valid :|")
-            
+            print(form.errors)
     return {'form': form}

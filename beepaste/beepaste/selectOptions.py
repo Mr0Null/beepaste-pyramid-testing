@@ -1,18 +1,18 @@
-expireTimes = (
-    (0, 'Keep Forever'),
-    (300, '5 Minutes'),
-    (3600, '1 Hour'),
-    (86400, '1 Day'),
-    (604800, '1 Week')
-)
+expireTimes = [
+    ('0', 'Keep Forever'),
+    ('300', '5 Minutes'),
+    ('3600', '1 Hour'),
+    ('86400', '1 Day'),
+    ('604800', '1 Week')
+]
 
-encryptionMethods = (
+encryptionMethods = [
     ('no', 'No Encryption'),
     ('passwd', 'Encrypt with Password'),
     ('pgp', 'Encrypt with PGP Keys')
-)
+]
 
-languagesList = (
+languagesList = [
     ('abap' , 'Abap' ),
     ('abc' , 'Abc' ),
     ('actionscript' , 'Actionscript' ),
@@ -143,4 +143,4 @@ languagesList = (
     ('xml' , 'Xml' ),
     ('xquery' , 'Xquery' ),
     ('yaml' , 'Yaml' )
-)
+]

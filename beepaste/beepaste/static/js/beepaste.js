@@ -141,12 +141,12 @@ var ACE = {
         $('#pasteForm').submit(function() {
         //$('#submitBtn').click(function() {
             console.log(editor.getValue());
-            var encryption = $('input[name=encryption]:checked').val();
+            var encryption = $('input[name=pasteEncryption]:checked').val();
             if (encryption == "no") {
                 input.val(editor.getValue());
                 return true;
             }
-            return false;
+            //return false;
             //console.log("bz " + isEncrypted);
             if (isEncrypted != "yes") {
                 if (encryption == "pgp") {
