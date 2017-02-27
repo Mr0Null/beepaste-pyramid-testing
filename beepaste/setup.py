@@ -22,6 +22,7 @@ requires = [
     'passlib',
     'pyramid_mailer',
     'wtforms',
+    'wtforms_components',
     'qrcode',
     'Image',
 ]
