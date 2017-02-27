@@ -143,7 +143,7 @@ var ACE = {
             console.log(editor.getValue());
             var encryption = $('input[name=pasteEncryption]:checked').val();
             if (encryption == "no") {
-                input.val(editor.getValue());
+                input.val(Base64.encode(editor.getValue()));
                 return true;
             }
             //return false;
