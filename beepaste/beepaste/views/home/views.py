@@ -27,13 +27,12 @@ def home(request):
         return password
 
     def pasteExists(uri):
-        old_uris = Pastes.objects(pasteURI=uri)
-        if old_uris:
+        old_uris_count = request.dbsession.query(Pastes).filter_by(pasteURI=uri).count()
+        if old_uris_count > 0:
             return True
         return False
 
     form = createPaste(request.POST)
-
     if request.method == 'POST':
         if form.validate():
             print('form validated!')
