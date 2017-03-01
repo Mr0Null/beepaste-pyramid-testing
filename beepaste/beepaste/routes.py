@@ -1,10 +1,9 @@
 def includeme(config):
     config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('home', '/')
+    config.add_route('home', '/') # TODO: add csrf
     config.add_route('about', '/about')
-    config.add_route('test', '/test')
+    config.add_route('test', '/test/{pasteID}')
     config.add_route('qrcode', '/qrcode/{uri}')
-    config.add_route('create', '/create') # post method, and csrf! also only accepts post
     config.add_route('view_raw', '/view/raw/{pasteID}')
     config.add_route('view_embed', '/view/embed/{pasteID}')
     config.add_route('view_paste', '/view/{pasteID}')
