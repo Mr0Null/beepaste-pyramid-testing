@@ -6,7 +6,7 @@ from qrcode import *
 def qrcode(request):
     uri = request.matchdict['uri']
     qr = QRCode(version=5, error_correction=ERROR_CORRECT_L)
-    qr.add_data("https://beepaste.ir/view/" + uri)
+    qr.add_data(request.route_url('view_paste', pasteID=uri))
     qr.make() # Generate the QRCode itself
     # im contains a PIL.Image.Image object
     im = qr.make_image()

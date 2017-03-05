@@ -9,12 +9,14 @@ from sqlalchemy import (
     Boolean,     # for expiration check
 )
 
+from webhelpers2.date import distance_of_time_in_words
+
 class Pastes(Base):
     __tablename__ = 'pastes'
     id = Column(Integer, primary_key=True)
     pasteURI = Column(Unicode(6), unique=True,nullable=False)
-    title = Column(Unicode(255), default=u'Untitled')
-    name = Column(Unicode(255), default=u'Anonymous')
+    title = Column(Unicode(255), nullable=False, default=u'Untitled')
+    name = Column(Unicode(255), nullable=False, default=u'Anonymous')
     username = Column(Unicode(255), nullable=True)
     lang = Column(Unicode(15), default=u'text')
     text = Column(UnicodeText, nullable=False)
@@ -23,3 +25,7 @@ class Pastes(Base):
     toexpire = Column(Boolean, default=False)
     shortURL = Column(Unicode(25), default=u'')
     encryption = Column(Unicode(6), default=u'no')
+
+    def created_in_words(self):
+        return distance_of_time_in_words(self.created,
+                                         datetime.datetime.utcnow())

@@ -99,16 +99,23 @@ var Base64 = {
 
 var ACE = {
 	init: function () {
-		//modeslist = ace.require('ace/ext/modelist');
-
 		editor = ace.edit("Editor");
 
 
+        base64ToText = function() {
+            var encoded = editor.getValue();
+            var decoded = Base64.decode(encoded);
+            editor.getSession().setValue(decoded);
+        }
+
+        base64ToText();
+
 		editor.setTheme("ace/theme/Dawn");
+        editor.setReadOnly(true);
 	    editor.setAutoScrollEditorIntoView(true);
+        editor.setOption("minLines", editor.getSession().getValue().split('\n').length);
+        editor.setOption("maxLines", editor.getSession().getValue().split('\n').length);
 	    editor.getSession().setUseWrapMode(true);
-	    editor.setOption("maxLines", 25);
-	    editor.setOption("minLines", 20);
 	    editor.setOptions({fontSize :"13pt"});
 
 		$('#pasteLanguage').change(function() {
@@ -119,97 +126,15 @@ var ACE = {
 			editor.getSession().setMode("ace/mode/"+mode);
 		};
 
-		check = function(mode) {
-			if (modeslist.modesByName[mode] == undefined) {
-				//console.log(mode + " doesn't exist!!");
-				return 0;
-			}
-			return 1;
-		}
-
 		set_language = function() {
 			var lang = $('#pasteLanguage').val();
 			mode = lang;
-			//if (check(mode)) set_syntax(mode);
             console.log("setting syntax " + mode);
 			set_syntax(mode);
 		};
 
 		set_language();
 
-        var input = $('input[name=pasteRaw]');
-        $('#pasteForm').submit(function() {
-        //$('#submitBtn').click(function() {
-            console.log(editor.getValue());
-            var encryption = $('input[name=pasteEncryption]:checked').val();
-            if (encryption == "no") {
-                input.val(Base64.encode(editor.getValue()));
-                return true;
-            }
-            //return false;
-            //console.log("bz " + isEncrypted);
-            if (isEncrypted != "yes") {
-                if (encryption == "pgp") {
-                    $('#pgpDialog').modal('open');
-                }else if (encryption == "passwd") {
-                    $("#passwdDialog").modal('open');
-                }
-                return false;
-            }
-            return true;
-    	});
-
-        $('#passwdSubmit').click(function() {
-            if (isEncrypted == "yes") {
-                //console.log("no need to do something twice!");
-                return 1;
-            }
-            var txt = editor.getValue();
-            var secret = $('#passwd').val();
-            if (!secret) {
-                $('#passwdError').show();
-                return 0;
-            }
-            isEncrypted = "yes";
-            var ret = "";
-            for(var i = 0, j = 0; i < txt.length; i++, j = (j+1) % secret.length) {
-                var curTxt = txt[i].charCodeAt();
-                var curSec = secret[j].charCodeAt();
-                ret += Base64.encode(String.fromCharCode(curTxt ^ curSec));
-            }
-            //console.log("txt = " + ret);
-            input.val(ret);
-            $('#passwd').val("");
-            $('#submitBtn').click();
-        });
-
-        $('#pgpSubmit').click(function() {
-            if (isEncrypted == "yes") {
-                //console.log("no need to do something twice!");
-                return 1;
-            }
-            var txt = editor.getValue();
-            var secret = $('#pgpkey').val();
-            if (!secret) {
-                $('#pgpError').show();
-                return 0;
-            }
-            isEncrypted = "yes";
-            var options, encrypted;
-            openpgp.initWorker({ path: 'static/js/openpgp.worker.min.js'})
-            options = {
-                data: txt,
-                publicKeys: openpgp.key.readArmored(secret).keys
-            };
-
-            openpgp.encrypt(options).then(function(ciphertext) {
-                ciphertxt = ciphertext.data;
-                //console.log("ret = " + ciphertxt);
-                input.val(Base64.encode(ciphertxt));
-                $('$pgpkey').val("");
-                $('#submitBtn').click();
-            });
-        });
 	}
 };
 

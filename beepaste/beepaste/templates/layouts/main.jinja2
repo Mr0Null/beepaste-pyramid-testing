@@ -27,7 +27,9 @@
     {% block navbar %}
         {{ panel('navbar') }}
     {% endblock %}
-
+    <script>
+        $(".button-collapse").sideNav();
+    </script>
     {% block content %}
     {% endblock %}
   </body>

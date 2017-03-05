@@ -3,6 +3,10 @@ from pyramid.view import view_config
 from beepaste.selectOptions import languagesList, encryptionMethods, expireTimes
 from beepaste.models.pastes import Pastes
 
+from pyramid.httpexceptions import (
+    HTTPFound
+)
+
 import string
 from random import *
 
@@ -48,6 +52,7 @@ def home(request):
                 newPaste.expire = datetime.datetime.utcnow() + datetime.timedelta(seconds=int(form.pasteExpire.data))
             newPaste.encryption = form.pasteEncryption.data
             request.dbsession.add(newPaste)
+            return HTTPFound(location=request.route_url('view_paste', pasteID=URI))
         else:
             print("not valid :|")
             print(form.errors)
