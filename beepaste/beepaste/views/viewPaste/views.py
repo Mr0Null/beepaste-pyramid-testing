@@ -17,3 +17,10 @@ def viewPaste(request):
     embedCode = '<iframe src="' + request.route_url('view_embed', pasteID=paste.pasteURI) +'" style="border:none;width:100%;min-height:300px;"></iframe>'
     title = paste.title + " - " + request.registry.settings['beepaste.siteName']
     return {'paste': paste, 'embedCode': embedCode, 'title': title}
+
+@view_config(route_name='view_embed', renderer='templates/pasteEmbed.jinja2')
+def viewPaste(request):
+    uri = request.matchdict['pasteID']
+    paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
+    title = paste.title + " - " + request.registry.settings['beepaste.siteName']
+    return {'paste': paste, 'title': title}
