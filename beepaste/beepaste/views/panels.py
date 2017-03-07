@@ -1,6 +1,8 @@
 from pyramid_layout.panel import panel_config
+from pyramid.view import view_config
 from os.path import join
 from ..models.users import Users
+import datetime
 
 @panel_config(name='navbar', renderer='templates/panels/navbar.jinja2')
 def navbar(context, request):
@@ -8,10 +10,9 @@ def navbar(context, request):
 
 @panel_config(name='footer', renderer='templates/panels/footer.jinja2')
 def footer(context, request):
-
-    with open(join(base, 'VERSION.txt')) as f:
-        version = f.read()
-    return {'version': version}
+    year = datetime.datetime.now().year
+    version = request.registry.settings['beepaste.version']
+    return {'version': version, 'year': year}
 
 
 @panel_config(name='menu', renderer='templates/panels/menu.jinja2')

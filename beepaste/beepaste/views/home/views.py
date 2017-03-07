@@ -33,7 +33,6 @@ def home(request):
         allchar = string.ascii_letters + string.digits
         uri = "".join(choice(allchar) for x in range(len))
         return uri
-    print(datetime.datetime.utcnow())
     form = createPaste(request.POST)
     if request.method == 'POST':
         if form.validate():
@@ -43,8 +42,10 @@ def home(request):
             while pasteExists(URI):
                 URI = generateURI(6)
             newPaste.pasteURI = URI
-            newPaste.title = form.pasteTitle.data
-            newPaste.name = form.pasteAuthor.data
+            if form.pasteTitle.data:
+                newPaste.title = form.pasteTitle.data
+            if form.pasteAuthor.data:
+                newPaste.name = form.pasteAuthor.data
             newPaste.lang = form.pasteLanguage.data
             newPaste.text = form.pasteRaw.data
             if form.pasteExpire.data != "0":

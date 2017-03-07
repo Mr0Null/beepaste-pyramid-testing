@@ -5,7 +5,7 @@ from qrcode import *
 @view_config(route_name='qrcode')
 def qrcode(request):
     uri = request.matchdict['uri']
-    qr = QRCode(version=5, error_correction=ERROR_CORRECT_L)
+    qr = QRCode(version=3, error_correction=ERROR_CORRECT_L)
     qr.add_data(request.route_url('view_paste', pasteID=uri))
     qr.make() # Generate the QRCode itself
     # im contains a PIL.Image.Image object

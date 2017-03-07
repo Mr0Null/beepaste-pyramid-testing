@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col s12 m12">
           <div class="card">
-            <div class="card-content" style="min-height: 100%;">
+            <div class="card-content view-card" style="min-height: 100%;">
                 <div class="title-spacer">
                     <div class="title-container"><span class="card-title"><h3>{{ paste.title | safe }}</h3></span></div>
                 </div>
@@ -20,9 +20,9 @@
                         <img class="responsive-img" src="{{ request.route_url('qrcode', uri=paste.pasteURI) }}" alt="share using qrcode!">
                     </div>
                 </div>
-                <div class="row">
+                <div class="row editor-area-view">
                     <input id="pasteLanguage" value="{{ paste.lang }}" type="hidden">
-                    <pre id="Editor">{{ paste.text }}</pre>
+                    <pre id="Editor" class="editor-view">{{ paste.text }}</pre>
                 </div>
             </div>
           </div>
@@ -33,4 +33,15 @@
       <script type="text/javascript" src="{{request.static_url('beepaste:static/js/beepaste-view.js')}}"></script>
 </div>
 
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large blue">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+    </a>
+    <ul>
+        <li><a class="btn-floating blue darken-1" href="https://telegram.me/share/url?url={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-paper-plane" aria-hidden="true"></i></a></li>
+        <li><a class="btn-floating red darken-1" href="https://plus.google.com/share?url={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+        <li><a class="btn-floating blue darken-3" href="https://www.facebook.com/sharer/sharer.php?u={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        <li><a class="btn-floating blue lighten-2" href="https://twitter.com/intent/tweet?text={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+    </ul>
+</div>
 {% endblock %}
