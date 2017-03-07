@@ -15,4 +15,5 @@ def viewPaste(request):
     uri = request.matchdict['pasteID']
     paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
     embedCode = '<iframe src="' + request.route_url('view_embed', pasteID=paste.pasteURI) +'" style="border:none;width:100%;min-height:300px;"></iframe>'
-    return {'paste': paste, 'embedCode': embedCode}
+    title = paste.title + " - " + request.registry.settings['beepaste.siteName']
+    return {'paste': paste, 'embedCode': embedCode, 'title': title}

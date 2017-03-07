@@ -1,5 +1,3 @@
-var isEncrypted = "no";
-var ciphertxt ="";
 var editor = {};
 
 var Base64 = {
@@ -144,5 +142,54 @@ $(document).ready(function() {
     $('.modal').modal({
         dismissible: false
     });
-    ACE.init();
+    var encryption = $('#pasteEncryption').val();
+    if (encryption == "passwd") {
+        $("#passwdDialog").modal('open');
+        $('#passwdSubmit').click(function() {
+            var encryptedData = Base64.decode($('#Editor').html());
+            var secret = $('#passwd').val();
+            if (!secret) {
+                $('#passwdError').show();
+                return 0;
+            }
+            var plainData = "";
+            for(var i = 0, j = 0; i < encryptedData.length; i++, j = (j+1) % secret.length) {
+                var curTxt = encryptedData[i].charCodeAt();
+                var curSec = secret[j].charCodeAt();
+                plainData += String.fromCharCode(curTxt ^ curSec);
+            }
+            $('#Editor').html(Base64.encode(plainData));
+            $('#passwd').val("");
+            $("#passwdDialog").modal('close');
+            ACE.init();
+        });
+    }else if (encryption == "pgp") {
+        $('#pgpDialog').modal('open');
+        $('#pgpSubmit').click(function() {
+            var secret = $('#pgpkey').val();
+            if (!secret) {
+                $('#pgpError').show();
+                return 0;
+            }
+            var pass = $('#pgppass').val();
+            var encryptedData = $('#Editor').html(), priv = openpgp.key.readArmored(secret);
+            var success = priv.keys[0].decrypt(pass);
+            var options;
+            openpgp.initWorker({ path: '/static/js/openpgp.worker.min.js'})
+            options = {
+                message: openpgp.message.readArmored(encryptedData),
+                privateKey: priv.keys[0]
+            };
+
+            openpgp.decrypt(options).then(function(plaintext) {
+                //console.log("txt = " + plaintext.data);
+                $('#Editor').html(Base64.encode(plaintext.data));
+                $('#pgpDialog').modal('close');
+                ACE.init();
+                return plaintext.data;
+            });
+        });
+    } else{
+        ACE.init();
+    }
 });

@@ -57,10 +57,4 @@ def home(request):
         else:
             print("not valid :|")
             print(form.errors)
-    return {'form': form}
-
-@view_config(route_name='test', renderer='templates/paste.jinja2')
-def test(request):
-    uri = request.matchdict['pasteID']
-    paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
-    return {'paste': paste}
+    return {'form': form, 'title': request.registry.settings['beepaste.siteName']}
