@@ -13,6 +13,7 @@
                     <div class="col s12 m9 l10 left">
                         <div class="details">By {{paste.name}}, Created {{ paste.created_in_words() }} ago</div>
                         <div class="details">URL <a href="{{ request.route_url('view_paste', pasteID=paste.pasteURI) }}">{{ request.route_url('view_paste', pasteID=paste.pasteURI) }}</a></div>
+                        <div class="details">short URL <a href="{{ paste.shortURL }}">{{ paste.shortURL }}</a></div>
                         <div class="details">Embed Code: <input data-lang-showcode="Show Code" id="embed_field" type="text" value="{{ embedCode }}"/></div>
                         <div class="details"><a href="{{ request.route_url('view_raw', pasteID=paste.pasteURI) }}">View Raw</a></div>
                     </div>

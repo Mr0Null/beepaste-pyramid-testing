@@ -25,6 +25,7 @@ requires = [
     'wtforms_components',
     'qrcode',
     'Image',
+    'pyshorteners'
 ]
 
 tests_require = [
