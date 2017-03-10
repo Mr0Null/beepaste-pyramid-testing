@@ -1,8 +1,9 @@
 def includeme(config):
     config.add_static_view('static', 'static', cache_max_age=3600)
+# TODO:
+#       add og and twitter card tags to main template
     config.add_route('home', '/') # TODO: add csrf
     config.add_route('about', '/about')
-    config.add_route('test', '/test/{pasteID}')
     config.add_route('qrcode', '/qrcode/{uri}')
     config.add_route('view_raw', '/view/raw/{pasteID}')
     config.add_route('view_embed', '/view/embed/{pasteID}')

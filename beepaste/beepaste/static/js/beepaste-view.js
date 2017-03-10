@@ -108,11 +108,16 @@ var ACE = {
 
         base64ToText();
 
+        max = function(a, b) {
+            if (a >= b) return a;
+            return b;
+        }
+
 		editor.setTheme("ace/theme/Dawn");
         editor.setReadOnly(true);
 	    editor.setAutoScrollEditorIntoView(true);
-        editor.setOption("minLines", editor.getSession().getValue().split('\n').length);
-        editor.setOption("maxLines", editor.getSession().getValue().split('\n').length);
+        editor.setOption("minLines", max(editor.getSession().getValue().split('\n').length, 10));
+        editor.setOption("maxLines", max(editor.getSession().getValue().split('\n').length, 10));
 	    editor.getSession().setUseWrapMode(true);
 	    editor.setOptions({fontSize :"13pt"});
 

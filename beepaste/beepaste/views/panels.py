@@ -1,8 +1,10 @@
 from pyramid_layout.panel import panel_config
 from pyramid.view import view_config
 from os.path import join
+from beepaste.paths import base
 from ..models.users import Users
 import datetime
+import json
 
 @panel_config(name='navbar', renderer='templates/panels/navbar.jinja2')
 def navbar(context, request):
@@ -34,11 +36,16 @@ def menu(context, request):
     items.append(nav_item('<i class="fa fa-plus-circle" aria-hidden="true"></i> Create Paste', request.route_path('home')))
     items.append(nav_item('<i class="fa fa-cogs" aria-hidden="true"></i> API', request.route_path('api')))
     items.append(nav_item('<i class="fa fa-info" aria-hidden="true"></i> About Us', request.route_path('about')))
-    if not request.authenticated_userid:
-        items.append(nav_item('<i class="fa fa-sign-in" aria-hidden="true"></i> Signin', request.route_path('signin')))
-        items.append(nav_item('<i class="fa fa-pencil-square-o"></i> Signup', request.route_path('signout')))
-    else:
-        items.append(nav_item('Signout {}'.format(Users.objects(userID=request.authenticated_userid).first().username),
-                              request.route_path('signout')) )
+    return {'items': items}
 
+@panel_config(name='authors', renderer='templates/panels/authors.jinja2')
+def authors(context, request):
+    def authorItems(name, img, about, social):
+        #item = dict(name = name, about = about, img = img, social = social)
+        item = {'name': name, 'about': about, 'img': img, 'social': social}
+        return item
+
+    with open(join(base, 'AUTHORS.txt')) as f:
+        content = f.read()
+        items = json.loads(content)
     return {'items': items}

@@ -40,10 +40,10 @@
         <i class="fa fa-share-alt" aria-hidden="true"></i>
     </a>
     <ul>
-        <li><a class="btn-floating blue darken-1" href="https://telegram.me/share/url?url={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-paper-plane" aria-hidden="true"></i></a></li>
-        <li><a class="btn-floating red darken-1" href="https://plus.google.com/share?url={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-        <li><a class="btn-floating blue darken-3" href="https://www.facebook.com/sharer/sharer.php?u={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-        <li><a class="btn-floating blue lighten-2" href="https://twitter.com/intent/tweet?text={{ request.route_url('view_paste', pasteID=paste.pasteURI) }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        <li><a class="btn-floating blue darken-1" href="https://telegram.me/share/url?url={{ paste.shortURL }}"><i class="fa fa-paper-plane" aria-hidden="true"></i></a></li>
+        <li><a class="btn-floating red darken-1" href="https://plus.google.com/share?url={{ paste.shortURL }}"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+        <li><a class="btn-floating blue darken-3" href="https://www.facebook.com/sharer/sharer.php?u={{ paste.shortURL }}"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        <li><a class="btn-floating blue lighten-2" href="https://twitter.com/intent/tweet?text={{ paste.shortURL }}"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
     </ul>
 </div>
 

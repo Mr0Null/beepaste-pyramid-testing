@@ -13,7 +13,4 @@ def home(request):
         if form.validate():
             URI = createPaste(form, request)
             return HTTPFound(location=request.route_url('view_paste', pasteID=URI))
-        else:
-            print("not valid :|")
-            print(form.errors)
     return {'form': form, 'title': request.registry.settings['beepaste.siteName']}
