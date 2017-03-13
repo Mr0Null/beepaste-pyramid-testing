@@ -30,6 +30,41 @@ def generateShortURL(url, request):
     shortener = Shortener('Bitly', bitly_token=access_token)
     return shortener.short(url)
 
+def fetchData(data, key, required=True):
+    try:
+        ret = data[key]
+        return ret
+    except:
+        if required:
+            raise Exception(key + ' not found.')
+
+def verifyExpire(exp):
+    try:
+        tmp = int(exp)
+        datetime.timedelta(seconds=int(form.pasteExpire.data))
+    except:
+        raise Exception('invalid pasteExpire')
+
+def verifyLanguage(lang):
+    try:
+        count = len([v for i, v in enumerate(languagesList) if v[0] == lang])
+        if count == 0:
+            raise Exception('invalid pasteLanguage.')
+    except:
+        raise Exception('invalid pasteLanguage.')
+
+def verifyEncryption(enc):
+    try:
+        count = len([v for i, v in enumerate(encryptionMethods) if v[0] == enc])
+        if count == 0:
+            raise Exception('invalid pasteEncryption.')
+    except:
+        raise Exception('invalid pasteEncryption.')
+
+def verifyTitleAndAuthor(txt):
+    if len(txt) > 255:
+        raise Exception('invalid length for pasteTitle or pasteAuthor')
+
 def createPaste(form, request):
     newPaste = Pastes()
     URI = generateURI(6)
@@ -46,6 +81,26 @@ def createPaste(form, request):
         newPaste.toexpire = True
         newPaste.expire = datetime.datetime.utcnow() + datetime.timedelta(seconds=int(form.pasteExpire.data))
     newPaste.encryption = form.pasteEncryption.data
+    newPaste.shortURL = generateShortURL(request.route_url('view_paste', pasteID=URI), request)
+    request.dbsession.add(newPaste)
+    return URI
+
+def createPasteFromData(data, request):
+    newPaste = Pastes()
+    URI = generateURI(6)
+    while pasteExists(URI, request):
+        URI = generateURI(6)
+    newPaste.pasteURI = URI
+    if data['pasteTitle']:
+        newPaste.title = data['pasteTitle']
+    if data['pasteAuthor']:
+        newPaste.name = data['pasteAuthor']
+    newPaste.lang = data['pasteLanguage']
+    newPaste.text = data['pasteRaw']
+    if data['pasteExpire'] != "0":
+        newPaste.toexpire = True
+        newPaste.expire = datetime.datetime.utcnow() + datetime.timedelta(seconds=int(data['pasteExpire']))
+    newPaste.encryption = data['pasteEncryption']
     newPaste.shortURL = generateShortURL(request.route_url('view_paste', pasteID=URI), request)
     request.dbsession.add(newPaste)
     return URI
