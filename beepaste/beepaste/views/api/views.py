@@ -17,35 +17,38 @@ def apiView(request):
 @view_config(route_name='api_create', renderer='templates/apiReturn.jinja2')
 def apiCreate(request):
     try:
-        data = request.json_body
+        if request.method == "POST" and request.json_body:
+            data = request.json_body
 
-        apikey = func.fetchData(data, 'api-key')
-        verifyKey(apikey, request)
+            apikey = func.fetchData(data, 'api-key')
+            verifyKey(apikey, request)
 
-        pasteRaw = func.fetchData(data, 'pasteRaw')
+            pasteRaw = func.fetchData(data, 'pasteRaw')
 
-        pasteLanguage = func.fetchData(data, 'pasteLanguage')
-        func.verifyLanguage(pasteLanguage)
+            pasteLanguage = func.fetchData(data, 'pasteLanguage')
+            func.verifyLanguage(pasteLanguage)
 
-        pasteTitle = func.fetchData(data, 'pasteTitle', False)
-        func.verifyTitleAndAuthor(pasteTitle)
+            pasteTitle = func.fetchData(data, 'pasteTitle', False)
+            func.verifyTitleAndAuthor(pasteTitle)
 
-        pasteAuthor = func.fetchData(data, 'pasteAuthor', False)
-        func.verifyTitleAndAuthor(pasteAuthor)
+            pasteAuthor = func.fetchData(data, 'pasteAuthor', False)
+            func.verifyTitleAndAuthor(pasteAuthor)
 
-        pasteExpire = func.fetchData(data, 'pasteExpire', False)
-        func.verifyExpire(pasteExpire)
+            pasteExpire = func.fetchData(data, 'pasteExpire', False)
+            func.verifyExpire(pasteExpire)
 
-        pasteEncryption = func.fetchData(data, 'pasteEncryption', False)
-        func.verifyEncryption(pasteEncryption)
+            pasteEncryption = func.fetchData(data, 'pasteEncryption', False)
+            func.verifyEncryption(pasteEncryption)
 
-        newPasteURI = func.createPasteFromData(data, request)
+            newPasteURI = func.createPasteFromData(data, request)
 
-        resp = Response()
-        resp.status_int = 201
-        resp.text = newPasteURI
+            resp = Response()
+            resp.status_int = 201
+            resp.text = newPasteURI
 
-        return resp
+            return resp
+        else:
+            raise Exception('invalid request.')
 
     except Exception as e:
         resp = Response()
