@@ -17,8 +17,7 @@ def apiView(request):
 @view_config(route_name='api_create', renderer='templates/apiReturn.jinja2')
 def apiCreate(request):
     try:
-        data = func.fetchData(request.POST, 'data')
-        data = json.loads(data)
+        data = request.json_body
 
         apikey = func.fetchData(data, 'api-key')
         verifyKey(apikey, request)
@@ -49,10 +48,7 @@ def apiCreate(request):
         return resp
 
     except Exception as e:
-        #return {'returnValue': 'data not found! nothing to do.'}
         resp = Response()
         resp.status_int = 409
         resp.text = str(e)
         return resp
-
-    #return {'returnValue': apikey}
