@@ -22,7 +22,5 @@ def includeme(config):
 
     config.add_route('schedeuled_remove', '/cron/{cronkey}')
 
-    config.add_route('api_create', '/api/create') # gets post method!
-    config.add_route('api_get', '/api/view') # returns json data!
     config.add_route('api_langs', '/api/langs') # returns supported langs in json
     config.add_route('api', '/api') # describe api

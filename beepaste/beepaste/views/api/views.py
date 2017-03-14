@@ -1,6 +1,7 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 import beepaste.pasteFunctions as func
+from beepaste.selectOptions import languagesList
 from beepaste.models.api import API
 import json
 import base64
@@ -53,9 +54,12 @@ def apiView(request):
 
             newPasteURI = func.createPasteFromData(data, request)
 
+            retData = {}
+            retData['url'] = request.route_url('view_paste', pasteID=newPasteURI)
+
             resp = Response()
             resp.status_int = 201
-            resp.text = request.route_url('view_paste', pasteID=newPasteURI) + '\n'
+            resp.json = json.dumps(retData)
 
             return resp
         elif request.method == "GET":
@@ -64,11 +68,30 @@ def apiView(request):
             except:
                 return {'title': title}
             data = request.json_body
-            pasteID = func.fetchData(data, 'pasteID')
+            try:
+                pasteID = func.fetchData(data, 'pasteID')
+                if not func.pasteExists(pasteID, request):
+                    raise Exception('paste not found.')
+            except Exception as e:
+                resp = Response()
+                resp.status_int = 404
+                resp.json = '{"error": "' + str(e) + '"}'
+                return resp
+
             paste = func.getPaste(pasteID, request)
+
+            retData = {}
+            retData['url'] = request.route_url('view_paste', pasteID=paste.pasteURI)
+            retData['pasteTitle'] = paste.title
+            retData['pasteAuthor'] = paste.name
+            retData['pasteLanguage'] = paste.lang
+            retData['pasteRaw'] = base64.b64decode(paste.text).decode('utf-8')
+            retData['pasteEncryption'] = paste.encryption
+            retData['shortURL'] = paste.shortURL
+
             resp = Response()
-            resp.status_int = 201
-            resp.text = str(paste.lang)
+            resp.status_int = 200
+            resp.json = json.dumps(retData)
             return resp
         else:
             raise Exception('invalid request.')
@@ -76,5 +99,16 @@ def apiView(request):
     except Exception as e:
         resp = Response()
         resp.status_int = 409
-        resp.text = str(e) + '\n'
+        resp.json = '{"error": "' + str(e) + '"}'
         return resp
+
+@view_config(route_name='api_langs')
+def apiLang(request):
+    retData = {}
+    retData['pasteLanguages'] = languagesList
+
+    resp = Response()
+    resp.status_int = 200
+    resp.json = json.dumps(retData)
+
+    return resp

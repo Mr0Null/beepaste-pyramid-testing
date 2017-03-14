@@ -1,6 +1,8 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 from beepaste.models.pastes import Pastes
+from beepaste.pasteFunctions import pasteExists
+from pyramid.httpexceptions import HTTPNotFound, HTTPFound
 import base64
 
 @view_config(route_name='view_raw', renderer='templates/pasteRaw.jinja2')
@@ -20,6 +22,8 @@ def viewEmbed(request):
 @view_config(route_name='view_paste', renderer='templates/pasteView.jinja2')
 def viewPaste(request):
     uri = request.matchdict['pasteID']
+    if not pasteExists(uri, request):
+        return HTTPNotFound()
     paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
     embedCode = '<iframe src="' + request.route_url('view_embed', pasteID=paste.pasteURI) +'" style="border:none;width:100%;min-height:300px;"></iframe>'
     title = paste.title + " - " + request.registry.settings['beepaste.siteName']
