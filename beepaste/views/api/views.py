@@ -65,5 +65,5 @@ def apiCreate(request):
     except Exception as e:
         resp = Response()
         resp.status_int = 409
-        resp.text = str(e)‌ + '\n'
+        resp.text = str(e) + '\n'
         return resp
