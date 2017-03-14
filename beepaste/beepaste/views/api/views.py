@@ -3,6 +3,7 @@ from pyramid.view import view_config
 import beepaste.pasteFunctions as func
 from beepaste.models.api import API
 import json
+import base64
 
 def verifyKey(apikey, request):
     api_count = request.dbsession.query(API).filter_by(apikey=apikey).count()
@@ -24,6 +25,7 @@ def apiCreate(request):
             verifyKey(apikey, request)
 
             pasteRaw = func.fetchData(data, 'pasteRaw')
+            data['pasteRaw'] = base64.b64encode(pasteRaw.encode('utf-8')).decode('utf-8')
 
             pasteLanguage = func.fetchData(data, 'pasteLanguage')
             func.verifyLanguage(pasteLanguage)
@@ -65,5 +67,5 @@ def apiCreate(request):
     except Exception as e:
         resp = Response()
         resp.status_int = 409
-        resp.text = str(e)‌ + '\n'
+        resp.text = str(e) + '\n'
         return resp
