@@ -37,6 +37,8 @@ def fetchData(data, key, required=True):
     except:
         if required:
             raise Exception(key + ' not found.')
+        else:
+            return ""
 
 def verifyExpire(exp):
     try:

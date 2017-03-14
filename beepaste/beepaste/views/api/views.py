@@ -29,22 +29,34 @@ def apiCreate(request):
             func.verifyLanguage(pasteLanguage)
 
             pasteTitle = func.fetchData(data, 'pasteTitle', False)
-            func.verifyTitleAndAuthor(pasteTitle)
+            if pasteTitle:
+                func.verifyTitleAndAuthor(pasteTitle)
+            else:
+                data['pasteTitle'] = pasteTitle
 
             pasteAuthor = func.fetchData(data, 'pasteAuthor', False)
-            func.verifyTitleAndAuthor(pasteAuthor)
+            if pasteAuthor:
+                func.verifyTitleAndAuthor(pasteAuthor)
+            else:
+                data['pasteAuthor'] = pasteAuthor
 
             pasteExpire = func.fetchData(data, 'pasteExpire', False)
-            func.verifyExpire(pasteExpire)
+            if pasteExpire:
+                func.verifyExpire(pasteExpire)
+            else:
+                data['pasteExpire'] = "0"
 
             pasteEncryption = func.fetchData(data, 'pasteEncryption', False)
-            func.verifyEncryption(pasteEncryption)
+            if pasteEncryption:
+                func.verifyEncryption(pasteEncryption)
+            else:
+                data['pasteEncryption'] = pasteEncryption
 
             newPasteURI = func.createPasteFromData(data, request)
 
             resp = Response()
             resp.status_int = 201
-            resp.text = newPasteURI
+            resp.text = request.route_url('view_paste', pasteID=newPasteURI) + '\n'
 
             return resp
         else:
@@ -53,5 +65,5 @@ def apiCreate(request):
     except Exception as e:
         resp = Response()
         resp.status_int = 409
-        resp.text = str(e)
+        resp.text = str(e)‌ + '\n'
         return resp
