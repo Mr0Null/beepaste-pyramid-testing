@@ -106,3 +106,7 @@ def createPasteFromData(data, request):
     newPaste.shortURL = generateShortURL(request.route_url('view_paste', pasteID=URI), request)
     request.dbsession.add(newPaste)
     return URI
+
+def getPaste(pasteID, request):
+    paste = request.dbsession.query(Pastes).filter_by(pasteURI=pasteID).first()
+    return paste

@@ -4,6 +4,7 @@ import beepaste.pasteFunctions as func
 from beepaste.models.api import API
 import json
 import base64
+from beepaste.models.pastes import Pastes
 
 def verifyKey(apikey, request):
     api_count = request.dbsession.query(API).filter_by(apikey=apikey).count()
@@ -13,10 +14,6 @@ def verifyKey(apikey, request):
 @view_config(route_name='api', renderer='templates/apiView.jinja2')
 def apiView(request):
     title = 'API' + " - " + request.registry.settings['beepaste.siteName']
-    return {'title': title}
-
-@view_config(route_name='api_create', renderer='templates/apiReturn.jinja2')
-def apiCreate(request):
     try:
         if request.method == "POST" and request.json_body:
             data = request.json_body
@@ -60,6 +57,18 @@ def apiCreate(request):
             resp.status_int = 201
             resp.text = request.route_url('view_paste', pasteID=newPasteURI) + '\n'
 
+            return resp
+        elif request.method == "GET":
+            try:
+                data = request.json_body
+            except:
+                return {'title': title}
+            data = request.json_body
+            pasteID = func.fetchData(data, 'pasteID')
+            paste = func.getPaste(pasteID, request)
+            resp = Response()
+            resp.status_int = 201
+            resp.text = str(paste.lang)
             return resp
         else:
             raise Exception('invalid request.')
