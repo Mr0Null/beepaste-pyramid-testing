@@ -8,6 +8,8 @@ import base64
 @view_config(route_name='view_raw', renderer='templates/pasteRaw.jinja2')
 def viewRaw(request):
     uri = request.matchdict['pasteID']
+    if not pasteExists(uri, request):
+        raise HTTPNotFound()
     paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
     raw = base64.b64decode(paste.text.encode('utf-8')).decode('utf-8')
     request.response.content_type = "text/plain; charset=UTF-8"
@@ -16,6 +18,8 @@ def viewRaw(request):
 @view_config(route_name='view_embed', renderer='templates/pasteEmbed.jinja2')
 def viewEmbed(request):
     uri = request.matchdict['pasteID']
+    if not pasteExists(uri, request):
+        raise HTTPNotFound()
     paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
     title = paste.title + " - " + request.registry.settings['beepaste.siteName']
     return {'paste': paste, 'title': title}
