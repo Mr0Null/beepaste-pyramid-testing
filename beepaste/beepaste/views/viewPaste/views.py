@@ -23,7 +23,7 @@ def viewEmbed(request):
 def viewPaste(request):
     uri = request.matchdict['pasteID']
     if not pasteExists(uri, request):
-        return HTTPNotFound()
+        raise HTTPNotFound()
     paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
     embedCode = '<iframe src="' + request.route_url('view_embed', pasteID=paste.pasteURI) +'" style="border:none;width:100%;min-height:300px;"></iframe>'
     title = paste.title + " - " + request.registry.settings['beepaste.siteName']
