@@ -10,7 +10,7 @@ def viewRaw(request):
     uri = request.matchdict['pasteID']
     paste = request.dbsession.query(Pastes).filter_by(pasteURI=uri).first()
     raw = base64.b64decode(paste.text.encode('utf-8')).decode('utf-8')
-    request.response.content_type = "text/plain charset=utf-8"
+    request.response.content_type = "text/plain; charset=UTF-8"
     return {'raw': raw}
 
 @view_config(route_name='view_embed', renderer='templates/pasteEmbed.jinja2')
