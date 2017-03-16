@@ -5,4 +5,4 @@ from pyramid.view import notfound_view_config
 def notfound_view(request):
     request.response.status = 404
     title = '404: page not found' + " - " + request.registry.settings['beepaste.siteName']
-    return {'title': title}
+    return {'title': title, 'description': '404: Page Not Found, please try again!'}

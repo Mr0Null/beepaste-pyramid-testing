@@ -15,6 +15,7 @@ def verifyKey(apikey, request):
 @view_config(route_name='api', renderer='templates/apiView.jinja2')
 def apiView(request):
     title = 'API' + " - " + request.registry.settings['beepaste.siteName']
+    description = "Here is the rest-ful api! With this api you can create or get pastes in beepaste! For more information on how to work with API and for samples please visit the link."
     try:
         if request.method == "POST" and request.json_body:
             data = request.json_body
@@ -66,7 +67,7 @@ def apiView(request):
             try:
                 data = request.json_body
             except:
-                return {'title': title}
+                return {'title': title, 'description': description}
             data = request.json_body
             try:
                 pasteID = func.fetchData(data, 'pasteID')
@@ -75,7 +76,8 @@ def apiView(request):
             except Exception as e:
                 resp = Response()
                 resp.status_int = 404
-                resp.json = '{"error": "' + str(e) + '"}'
+                retData = {"error": str(e)}
+                resp.json = retData
                 return resp
 
             paste = func.getPaste(pasteID, request)
@@ -99,7 +101,8 @@ def apiView(request):
     except Exception as e:
         resp = Response()
         resp.status_int = 409
-        resp.json = '{"error": "' + str(e) + '"}'
+        retData = {"error": str(e)}
+        resp.json = retData
         return resp
 
 @view_config(route_name='api_langs')
