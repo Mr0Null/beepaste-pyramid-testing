@@ -23,6 +23,6 @@ def includeme(config):
     config.add_route('schedeuled_remove', '/cron/{cronkey}')
 
     config.add_route('api_langs', '/api/langs') # returns supported langs in json
-    config.add_route('api_intro', '/api/intro') # show how to use api html page
-    config.add_route('api_get', '/api/{pasteid}') # api handel get
-    config.add_route('api_post', '/api') # api handel post
+    config.add_route('api_intro', '/api/doc') # show how to use api html page
+    config.add_route('api_get', '/api/{pasteid}') # api handle get
+    config.add_route('api_post', '/api') # api handle post
