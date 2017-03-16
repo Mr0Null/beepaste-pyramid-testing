@@ -8,9 +8,8 @@ from pyramid.httpexceptions import (
 
 @view_config(route_name='home', renderer='templates/home.jinja2')
 def home(request):
-    form = createPasteForm(request.POST)
-    if request.method == 'POST':
-        if form.validate():
-            URI = createPaste(form, request)
-            return HTTPFound(location=request.route_url('view_paste', pasteID=URI))
+    form = createPasteForm(request.POST, csrf_context=request)
+    if request.method == 'POST' and form.validate():
+        URI = createPaste(form, request)
+        return HTTPFound(location=request.route_url('view_paste', pasteID=URI))
     return {'form': form, 'title': request.registry.settings['beepaste.siteName']}
