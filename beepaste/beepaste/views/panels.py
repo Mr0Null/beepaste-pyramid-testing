@@ -34,7 +34,7 @@ def menu(context, request):
     items = []
     # items.append(nav_item('resume', '#', [nav_item(name, request.route_path(name)) for name in ['resume_list','resume_edit']]))
     items.append(nav_item('<i class="fa fa-plus-circle" aria-hidden="true"></i> Create Paste', request.route_path('home')))
-    items.append(nav_item('<i class="fa fa-cogs" aria-hidden="true"></i> API', request.route_path('api')))
+    items.append(nav_item('<i class="fa fa-cogs" aria-hidden="true"></i> API', request.route_path('api_intro')))
     items.append(nav_item('<i class="fa fa-info" aria-hidden="true"></i> About Us', request.route_path('about')))
     return {'items': items}
 
