@@ -5,8 +5,30 @@ from random import *
 import datetime
 from wtforms import Form, TextField, SelectField, validators, RadioField
 from beepaste.selectOptions import languagesList, encryptionMethods, expireTimes
+from wtforms.ext.csrf.form import SecureForm
 
-class createPasteForm(Form):
+
+class CSRFException(Exception):
+    pass
+
+
+class BaseForm(SecureForm):
+    def __init__(self, formdata=None, obj=None, prefix='', csrf_context=None,
+                 **kwargs):
+        super(BaseForm, self).__init__(formdata=formdata, obj=obj,
+                                          prefix=prefix,
+                                          csrf_context=csrf_context, **kwargs)
+        self._csrf_context = csrf_context
+
+    def generate_csrf_token(self, csrf_context):
+        return csrf_context.session.get_csrf_token()
+
+    def validate_csrf_token(self, field):
+        if field.data != field.current_token:
+            raise CSRFException('Invalid CSRF token')
+
+
+class createPasteForm(BaseForm):
     pasteTitle = TextField('Title', [validators.Length(min=0, max=255)])
     pasteAuthor = TextField('Author', [validators.Length(min=0, max=255)])
     pasteLanguage = SelectField('Syntax Highlighting', choices=languagesList, default='text', validators=[validators.Required()])

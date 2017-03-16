@@ -10,6 +10,9 @@
                 <form action="{{ form.action }}" method="post" id="pasteForm">
                   <div class="form-container">
                     <div class="row">
+		    	<div>
+                            {{ form.csrf_token() | safe }}
+			</div>
                         <div class="input-field col s12 m3">
                             {% for error in form.pasteAuthor.errors %}
                                 <div class="error">{{ error }}</div>
