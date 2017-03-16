@@ -23,11 +23,11 @@ def apiIntro(request):
                 get pastes in beepaste! For more information on how to
                 work with API and for samples please visit the link.'''
     samples = {}
-    samples['create'] = '''
+    samples['create'] = '''import requests
 data = {'api-key': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'pasteRaw': 'some text!', 'pasteLanguage': 'text'}
-r = requests.post(\'''' + request.route_url('api_post') + '''\', json=data, verify=False)'''
-    samples['get'] = '''
-r = requests.get(\'''' + request.route_url('api_get', pasteid='AAAAAA') + '''\', verify=False)'''
+r = requests.post(\'''' + request.route_url('api_post') + '''\', json=data)'''
+    samples['get'] = '''import requests
+r = requests.get(\'''' + request.route_url('api_get', pasteid='AAAAAA') + '''\')'''
     return {'title': title, 'description': description, 'samples': samples}
 
 
