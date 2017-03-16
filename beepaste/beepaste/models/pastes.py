@@ -8,6 +8,7 @@ from sqlalchemy import (
     DateTime,    # time abstraction field
     Boolean,     # for expiration check
 )
+from sqlalchemy.dialects.mysql import LONGTEXT
 
 from webhelpers2.date import distance_of_time_in_words
 
@@ -19,7 +20,7 @@ class Pastes(Base):
     name = Column(Unicode(255), nullable=False, default=u'Anonymous')
     username = Column(Unicode(255), nullable=True)
     lang = Column(Unicode(15), default=u'text')
-    text = Column(UnicodeText, nullable=False)
+    text = Column(LONGTEXT, nullable=False)
     created = Column(DateTime, default=datetime.datetime.utcnow)
     expire = Column(DateTime, default=datetime.datetime.utcnow)
     toexpire = Column(Boolean, default=False)

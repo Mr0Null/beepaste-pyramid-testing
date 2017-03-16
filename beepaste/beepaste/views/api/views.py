@@ -59,7 +59,7 @@ def apiView(request):
 
             resp = Response()
             resp.status_int = 201
-            resp.json = json.dumps(retData)
+            resp.json = retData
 
             return resp
         elif request.method == "GET":
@@ -91,7 +91,7 @@ def apiView(request):
 
             resp = Response()
             resp.status_int = 200
-            resp.json = json.dumps(retData)
+            resp.json = retData
             return resp
         else:
             raise Exception('invalid request.')
@@ -109,6 +109,6 @@ def apiLang(request):
 
     resp = Response()
     resp.status_int = 200
-    resp.json = json.dumps(retData)
+    resp.json = retData
 
     return resp
